@@ -1,0 +1,80 @@
+/** @format */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 4vw;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 85vw;
+  margin: 0 auto;
+  font-size: 2vw;
+  align-items: center;
+}
+
+input,
+select,
+textarea {
+  height: 4vw;
+  width: 90%;
+  font-size: 2vw;
+  margin-bottom: 2vw;
+  border: none;
+  background-color: rgb(237, 245, 252);
+  padding: 1vw;
+}
+
+label {
+  width: 90%;
+  margin-bottom: 1vw;
+}
+
+textarea {
+  height: 10vw;
+}
+
+button {
+  height: 6vw;
+  width: 50%;
+  margin: 0 auto;
+  border: none;
+  background-color: rgb(0, 26, 49);
+  color: white;
+  font-size: 2vw;
+  margin-top: 1vw;
+}
+
+.quantity {
+  background-color: rgb(221, 255, 244);
+  width: 90%;
+  padding: 2vw;
+}
+
+.quantity div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.quantity div section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+}
+
+.quantity input {
+  background-color: white;
+  margin: auto;
+}
+
+.quantity label {
+  margin: auto;
+}

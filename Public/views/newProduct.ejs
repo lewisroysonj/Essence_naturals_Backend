@@ -1,0 +1,71 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/newproduct.css" type="text/css" />
+    <title>Add New Product</title>
+  </head>
+  <body>
+    <h1>Add New Post</h1>
+    <form action="/products/add" method="POST">
+      <label for="name">Product Name*</label>
+      <input name="name" type="text" required />
+
+      <label for="category">Category*</label>
+      <select name="category" required>
+        <option>Cosmetics</option>
+        <option>Toiletries</option>
+        <option>Organic Foods</option>
+      </select>
+
+      <label for="FeaturedImage">Featured Image*</label>
+      <input type="text" name="FeaturedImage" required />
+
+      <label for="images">Images</label>
+      <input type="text" name="images" />
+
+      <label for="finalPrice">Final Price*</label>
+      <input type="number" required name="finalPrice" />
+
+      <label for="mrp">MRP*</label>
+      <input type="number" required name="mrp" />
+
+      <section class="quantity">
+        <h3>Quantity</h3>
+        <div>
+          <section>
+            <label for="value">Amount*</label>
+            <input type="number" required name="amount" />
+          </section>
+          <section>
+            <label for="units">Units*</label>
+            <input type="text" required name="units" />
+          </section>
+        </div>
+      </section>
+
+      <label for="description">Description*</label>
+      <textarea required name="description"></textarea>
+
+      <label for="isFeatured">Is Featured?*</label>
+      <select name="featured" required>
+        <option>True</option>
+        <option>False</option>
+      </select>
+
+      <label for="tags">Tags*</label>
+      <input type="text" required name="tags" />
+
+      <label for="varietyName">Variety Name</label>
+      <input type="text" name="varietyName" />
+
+      <label for="varietyEPIN">Variety EPIN</label>
+      <input type="text" name="varietyEPIN" />
+
+      <button type="submit">Add Post</button>
+    </form>
+  </body>
+</html>
