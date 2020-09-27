@@ -10,28 +10,37 @@
   </head>
   <body>
     <h1>Add New Post</h1>
-    <form action="/products/add" method="POST">
+    <form action="/products/add" method="POST" enctype="multipart/form-data">
       <label for="name">Product Name*</label>
       <input name="name" type="text" required />
 
-      <label for="category">Category*</label>
-      <select name="category" required>
-        <option>Cosmetics</option>
-        <option>Toiletries</option>
-        <option>Organic Foods</option>
+      <label for="categoryID">Category*</label>
+      <select name="categoryID" required>
+        <option value="cat123">Cosmetics</option>
+        <option value="cat234">Toiletries</option>
+        <option value="cat345">Organic Foods</option>
       </select>
 
-      <label for="FeaturedImage">Featured Image*</label>
-      <input type="text" name="FeaturedImage" required />
+      <label for="featuredImage">Featured Image*</label>
+      <input type="text" name="featuredImage" required />
 
       <label for="images">Images</label>
       <input type="text" name="images" />
+      <div id="addImageDiv"></div>
+      <div id="new"></div>
 
+      <input class="addImage" type="button" onclick="addImage()" value="+ Add More Images" />
+      <script>
+        function addImage() {
+          console.log("hellothere");
+          document.getElementById("addImageDiv").innerHTML += "<input type='text' name='images' />";
+        }
+      </script>
       <label for="finalPrice">Final Price*</label>
       <input type="number" required name="finalPrice" />
 
-      <label for="mrp">MRP*</label>
-      <input type="number" required name="mrp" />
+      <label for="MRP">MRP*</label>
+      <input type="number" required name="MRP" />
 
       <section class="quantity">
         <h3>Quantity</h3>
@@ -50,14 +59,20 @@
       <label for="description">Description*</label>
       <textarea required name="description"></textarea>
 
-      <label for="isFeatured">Is Featured?*</label>
+      <label for="featured">Is Featured?*</label>
       <select name="featured" required>
-        <option>True</option>
-        <option>False</option>
+        <option value="true">True</option>
+        <option value="false">False</option>
       </select>
 
       <label for="tags">Tags*</label>
       <input type="text" required name="tags" />
+
+      <label for="varietyName">Variety Name</label>
+      <input type="text" name="varietyName" />
+
+      <label for="varietyEPIN">Variety EPIN</label>
+      <input type="text" name="varietyEPIN" />
 
       <label for="varietyName">Variety Name</label>
       <input type="text" name="varietyName" />

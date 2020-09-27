@@ -26,8 +26,8 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   ratings: {
-    type: Array,
-    default: [],
+    type: Number,
+    default: 0,
   },
   finalPrice: {
     type: Number,
@@ -45,8 +45,8 @@ const productSchema = new mongoose.Schema({
     },
   },
   options: {
-    type: Object,
-    default: ["Only 1 variant available"],
+    type: Array,
+    default: null,
   },
   description: {
     type: Array,
@@ -57,7 +57,7 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   tags: {
-    type: String,
+    type: Array,
     required: true,
   },
   createdAt: {
@@ -66,6 +66,10 @@ const productSchema = new mongoose.Schema({
   },
   ratedCustomers: {
     type: Array,
+    default: {
+      id: null,
+      ratings: null,
+    },
   },
   slug: {
     type: String,

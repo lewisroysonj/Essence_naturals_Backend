@@ -1,3 +1,5 @@
 config
+config.env
+upload.js
 node_modules
 dist

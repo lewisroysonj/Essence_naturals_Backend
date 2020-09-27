@@ -15,6 +15,9 @@ const connectDB = require("./database/db");
 
 const router = require("./routes/index");
 const productRouter = require("./routes/products");
+const authRouter = require("./routes/auth");
+const userRouter = require("./routes/users");
+const contactRouter = require("./routes/contact");
 
 const app = express();
 
@@ -66,5 +69,8 @@ app.set("view engine", "ejs");
 //routes
 app.use("/", router);
 app.use("/products", productRouter);
+app.use("/auth", authRouter);
+app.use("/users", userRouter);
+app.use("/contact", contactRouter);
 
 app.listen(PORT, console.log(`Server is running in http://localhost:${PORT}`));

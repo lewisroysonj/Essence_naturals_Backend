@@ -30,6 +30,13 @@ textarea {
   padding: 1vw;
 }
 
+.addImage {
+  background-color: rgb(221, 255, 244);
+  width: fit-content;
+  align-self: flex-start;
+  margin-left: 3.3vw;
+}
+
 label {
   width: 90%;
   margin-bottom: 1vw;
@@ -37,6 +44,14 @@ label {
 
 textarea {
   height: 10vw;
+}
+
+.addImageDiv {
+  width: 90%;
+}
+
+.addImageDiv input {
+  width: 100%;
 }
 
 button {
