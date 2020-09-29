@@ -40,8 +40,8 @@ router.post("/subscribe", (req, res) => {
   });
 });
 
-router.get("/:id", authenticateToken, async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id });
+router.get("/user", authenticateToken, async (req, res) => {
+  const user = await User.findOne({ _id: req.user.accessUser });
   try {
     if (user) {
       res.send({

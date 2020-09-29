@@ -16,8 +16,8 @@ router.post("/register", emailToLowerCase, (req, res, next) => {
       if (err) throw err;
       if (doc)
         res.status(206).json({
-          newUser: false,
-          status: "Email already exists!",
+          error: true,
+          message: "Email already exists!",
         });
       if (!doc) {
         try {
@@ -29,9 +29,10 @@ router.post("/register", emailToLowerCase, (req, res, next) => {
           });
 
           await newUser.save();
-          res.send({ res: "Signed Up successfully" });
+          res.send({ error: false, message: "Signed Up successfully, Sign In with your account to continue", userEmail: req.body.email });
         } catch (err) {
-          console.log("Register1 Err: ", err);
+          console.error("Register1 Err: ", err);
+          res.status(500).json({ error: true, message: "Something went wrong!" });
         }
       }
     });
@@ -45,16 +46,19 @@ router.post("/login", emailToLowerCase, async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (user === null) {
-    res.status(203).send({ res: "User not found" });
+    res.status(203).send({ error: true, message: "User not found" });
   } else {
     try {
       if (await bcrypt.compare(req.body.password, user.password)) {
         const accessUser = user._id;
         const accessToken = jwt.sign({ accessUser }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 604800 });
-        res.json({ accessToken: accessToken, res: "signed in succesfully", user });
-      } else res.send({ res: "Incorrect Password" });
+        res.json({ accessToken: accessToken, error: false, message: "signed in succesfully", user });
+      } else res.send({ error: true, message: "Incorrect Password" });
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).json({
+        error: true,
+        message: err.message,
+      });
       console.error("Login Err: ", err);
     }
   }
