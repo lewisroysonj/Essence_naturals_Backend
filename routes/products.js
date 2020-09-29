@@ -1,10 +1,10 @@
 /** @format */
 
 const express = require("express");
-const connectDB = require("../database/db");
+const Category = require("../models/category");
 const Product = require("../models/product");
-const listBuckets = require("../config/upload");
-const uploadImage = require("../config/upload");
+const ejsHelpers = require("../helpers/productEJS");
+const category = require("../models/category");
 
 const router = express.Router();
 
@@ -23,7 +23,15 @@ router.get("/", async (req, res) => {
 
 router.get("/add", async (req, res) => {
   let product = new Product();
-  res.render("newProduct");
+  let categories = await Category.find({});
+  const categoryList = categories.map((category) => {
+    return {
+      id: category._id,
+      name: category.name,
+      slug: category.slug,
+    };
+  });
+  res.render("newProduct", { categoryList, ejsHelpers });
 });
 
 router.post("/add", async (req, res) => {
@@ -37,10 +45,13 @@ router.post("/add", async (req, res) => {
 
     let tags = req.body.tags.split(/ , |, | ,|,/);
 
+    let categoryName = await Category.findOne({ slug: req.body.categoryID });
+
     let product = req.body;
     product.quantity = quantity;
     product.options = options;
     product.tags = tags;
+    product.categoryName = categoryName.name;
 
     const newProduct = new Product(product);
     await newProduct.save();
@@ -65,14 +76,24 @@ router.get("/:category", async (req, res) => {
     const products = await Product.find({
       categoryID: req.params.category,
     });
-    console.log(req.params.category);
-    console.log(products);
-    res.json({
-      error: false,
-      product: products,
+
+    const category = await Category.findOne({
+      slug: req.params.category,
     });
+
+    console.log(category);
+
+    if (category === null) {
+      res.status(404).json({ message: "Couldn't Find the Page you are looking for" });
+    } else {
+      res.json({
+        error: false,
+        product: products,
+        categoryName: category.name,
+      });
+    }
   } catch (err) {
-    console.error("Product Err: ", err);
+    console.error("Product Category Err: ", err);
     res.status(500).send("Something went wrong!");
   }
 });
@@ -82,9 +103,15 @@ router.get("/product/:id", async (req, res) => {
     const product = await Product.findOne({
       _id: req.params.id,
     });
+
+    const products = await Product.find({
+      _id: { $ne: req.params.id },
+    });
+
     res.json({
       error: false,
       product: product,
+      similarProducts: products,
     });
   } catch (err) {
     console.error("ProductData Err: ", err);

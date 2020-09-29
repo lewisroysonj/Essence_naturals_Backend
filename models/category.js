@@ -7,53 +7,23 @@ const { JSDOM } = require("jsdom");
 
 const dompurify = createDomPurify(new JSDOM().window);
 
-const productSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     unique: true,
   },
-  featuredImage: {
+  categoryImage: {
     type: String,
-    required: true,
-  },
-  images: {
-    type: Array,
     required: true,
   },
   categoryID: {
     type: String,
     required: true,
-  },
-  categoryName: {
-    type: String,
-    required: true,
-  },
-  ratings: {
-    type: Number,
-    default: 0,
-  },
-  finalPrice: {
-    type: Number,
-    required: true,
-  },
-  MRP: {
-    type: Number,
-    required: true,
-  },
-  quantity: {
-    type: Object,
-    default: {
-      value: 1,
-      unit: "no.",
-    },
-  },
-  options: {
-    type: Array,
-    default: null,
+    unique: true,
   },
   description: {
-    type: Array,
+    type: String,
     required: true,
   },
   featured: {
@@ -68,26 +38,14 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  ratedCustomers: {
-    type: Array,
-    default: {
-      id: null,
-      ratings: null,
-    },
-  },
   slug: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  EPIN: {
     type: String,
     required: true,
     unique: true,
   },
 });
 
-productSchema.pre("validate", function (next) {
+categorySchema.pre("validate", function (next) {
   if (this.name) {
     this.slug = slugify(this.name, { lower: true, strict: true });
   }
@@ -97,10 +55,9 @@ productSchema.pre("validate", function (next) {
   const nameLetters = nameArray.map((names) => {
     return names.charAt(0);
   });
-
-  this.EPIN = nameLetters.join("").toUpperCase() + Date.now();
+  this.categoryID = nameLetters.join("").toUpperCase() + Date.now();
 
   next();
 });
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model("Category", categorySchema);

@@ -1,0 +1,35 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/newproduct.css" type="text/css" />
+    <title>Add New Category</title>
+  </head>
+  <body>
+    <h1>Add New Category</h1>
+    <form action="/category/add" method="POST" enctype="multipart/form-data">
+      <label for="name">Category Name*</label>
+      <input name="name" type="text" required />
+
+      <label for="categoryImage">Category Image*</label>
+      <input type="text" name="categoryImage" required />
+
+      <label for="description">Description*</label>
+      <textarea required name="description"></textarea>
+
+      <label for="featured">Is Featured?*</label>
+      <select name="featured" required>
+        <option value="true">True</option>
+        <option value="false">False</option>
+      </select>
+
+      <label for="tags">Tags* (separate with comma)</label>
+      <input type="text" required name="tags" />
+
+      <button type="submit">Add Category</button>
+    </form>
+  </body>
+</html>

@@ -13,12 +13,11 @@
     <form action="/products/add" method="POST" enctype="multipart/form-data">
       <label for="name">Product Name*</label>
       <input name="name" type="text" required />
-
       <label for="categoryID">Category*</label>
-      <select name="categoryID" required>
-        <option value="cat123">Cosmetics</option>
-        <option value="cat234">Toiletries</option>
-        <option value="cat345">Organic Foods</option>
+      <select id="categorySelector" name="categoryID">
+        <% for (let i= 0; i < categoryList.length; i++) { %>
+        <option value="<%= categoryList[i].slug %>"><%= categoryList[i].name %></option>
+        <% } %>
       </select>
 
       <label for="featuredImage">Featured Image*</label>
@@ -32,7 +31,6 @@
       <input class="addImage" type="button" onclick="addImage()" value="+ Add More Images" />
       <script>
         function addImage() {
-          console.log("hellothere");
           document.getElementById("addImageDiv").innerHTML += "<input type='text' name='images' />";
         }
       </script>
