@@ -23,7 +23,10 @@ router.post("/", emailToLowerCase, async (req, res, next) => {
   newContact
     .save()
     .then(() => {
-      res.send("Your query has been submitted, we will get back to you soon");
+      res.json({
+        error: false,
+        message: "Your query has been submitted, we will get back to you soon",
+      });
     })
     .catch((err) => {
       console.error("Contact Submission Err :", err);

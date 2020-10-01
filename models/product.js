@@ -70,10 +70,7 @@ const productSchema = new mongoose.Schema({
   },
   ratedCustomers: {
     type: Array,
-    default: {
-      id: null,
-      ratings: null,
-    },
+    default: [],
   },
   slug: {
     type: String,
