@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "Essence Backend",
   "version": "0.1.0",
   "description": "API provider for Essence App",
   "main": "index.js",

@@ -41,18 +41,25 @@ router.post("/subscribe", (req, res) => {
 });
 
 router.get("/user", authenticateToken, async (req, res) => {
-  const user = await User.findOne({ _id: req.user.accessUser });
-  try {
-    if (user) {
-      res.send({
-        user,
-      });
-    } else {
-      res.send({ user: null });
+  if (req.user) {
+    const user = await User.findOne({ _id: req.user.accessUser });
+
+    console.log(user);
+
+    try {
+      if (user) {
+        res.send({
+          user,
+        });
+      } else {
+        res.status(404).send("User not found!");
+      }
+    } catch (err) {
+      console.error("Get User from ID Err :", err);
+      res.sendStatus(500);
     }
-  } catch (err) {
-    console.error("Get User from ID Err :", err);
-    res.sendStatus(500);
+  } else {
+    res.status(204).json({ message: "unauthorized" });
   }
 });
 

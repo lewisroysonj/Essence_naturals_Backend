@@ -20,6 +20,7 @@ const userRouter = require("./routes/users");
 const contactRouter = require("./routes/contact");
 const categoryRouter = require("./routes/categories");
 const searchRouter = require("./routes/search");
+const cartRouter = require("./routes/cart");
 
 const app = express();
 
@@ -68,6 +69,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.set("views", path.join(__dirname, "public", "views"));
 app.set("view engine", "ejs");
+
 //routes
 app.use("/", router);
 app.use("/products", productRouter);
@@ -76,5 +78,6 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/contact", contactRouter);
 app.use("/search", searchRouter);
+app.use("/cart", cartRouter);
 
 app.listen(PORT, console.log(`Server is running in http://localhost:${PORT}`));

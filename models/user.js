@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.png",
   },
+  cartItems: {
+    type: Array,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -7,12 +7,13 @@ const ejsHelpers = require("../helpers/productEJS");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/all-products", async (req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: "desc" });
     res.json({
       error: false,
       product: products,
+      categoryName: "All Products",
     });
   } catch (err) {
     console.error("Product Err: ", err);
