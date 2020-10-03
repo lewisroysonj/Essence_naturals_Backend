@@ -4,6 +4,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
+const stripe = require("stripe")("sk_test_51HY93TDKKKjugUT604OIQ1zasqxfNu7oq4VrPsd9NrnwNGZZ3ZoQVCVQXYXbMs5ByVOh4w7DjbVERIRquqFLMtz000ty8ukAbl");
+
 const dotenv = require("dotenv");
 
 const morgan = require("morgan");
@@ -25,6 +27,8 @@ const cartRouter = require("./routes/cart");
 const app = express();
 
 const PORT = process.env.PORT || 5000;
+
+const CLIENT_DOMAIN = "http://localhost:3000/checkout";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -79,5 +83,30 @@ app.use("/users", userRouter);
 app.use("/contact", contactRouter);
 app.use("/search", searchRouter);
 app.use("/cart", cartRouter);
+
+app.post("/create-session", async (req, res) => {
+  console.log(req);
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "Stubborn Attachments",
+            images: ["https://i.imgur.com/EHyR2nP.png"],
+          },
+          unit_amount: 2000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: `${CLIENT_DOMAIN}?success=true`,
+    cancel_url: `${CLIENT_DOMAIN}?canceled=true`,
+  });
+
+  res.json({ id: session.id });
+});
 
 app.listen(PORT, console.log(`Server is running in http://localhost:${PORT}`));
