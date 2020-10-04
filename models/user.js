@@ -36,6 +36,14 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  shippingAddress: {
+    type: Object,
+    default: {},
+  },
+  orders: {
+    type: Array,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
