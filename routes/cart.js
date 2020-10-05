@@ -6,7 +6,7 @@ const { authenticateToken } = require("../middleware/auth");
 const Order = require("../models/order");
 const Product = require("../models/product");
 const User = require("../models/user");
-
+const { formatDate } = require("../helpers/date");
 const router = express.Router();
 
 function calculatePrice(products) {
@@ -159,6 +159,7 @@ async function saveAddress(req, res, next) {
     userAddress = req.body.shippingInfo;
     await User.updateOne({ _id: req.user.accessUser }, { shippingAddress: userAddress });
     console.log("Success");
+    req.user.email = user.email;
     next();
   } catch (err) {
     console.error("Save Address Error :", err);
@@ -171,9 +172,11 @@ async function saveAddress(req, res, next) {
 
 async function completePayment(req, res, next) {
   const line_items = [];
+  const totalPrice = [];
 
   for (let i = 0; i < req.body.items.length; i++) {
-    let price = req.body.items[i].finalPrice * 100;
+    let price = req.body.items[i].finalPrice * (10 / 100) * 100 + req.body.items[i].finalPrice * 100;
+    totalPrice.push(price);
     const product = {
       price_data: {
         currency: "usd",
@@ -195,9 +198,13 @@ async function completePayment(req, res, next) {
         payment_method_types: [req.body.paymentMode],
         line_items: line_items,
         mode: "payment",
-        success_url: `${process.env.CLIENT_DOMAIN}/checkout/?success=true`,
-        cancel_url: `${process.env.CLIENT_DOMAIN}/checkout/?canceled=true`,
+        success_url: `${process.env.CLIENT_DOMAIN}/checkout/status?success=true`,
+        cancel_url: `${process.env.CLIENT_DOMAIN}/checkout/status?canceled=true`,
+        client_reference_id: req.user.accessUser,
+        customer_email: req.user.email,
+        metadata: req.body.shippingInfo,
       });
+      console.log(session);
       req.user.sessionID = session.id;
       console.log("session", req.user.sessionID);
       next();
@@ -268,10 +275,25 @@ async function saveOrder(req, res, next) {
   }
 }
 
-router.post("/checkout/create-session", authenticateToken, saveAddress, completePayment, saveOrder, removeCartItems, async (req, res) => {
+router.post("/checkout/create-session", authenticateToken, saveAddress, completePayment, async (req, res) => {
   res.json({
     id: req.user.sessionID,
     transactionID: req.transactionID,
+  });
+});
+
+router.post("/checkout/placeorder", authenticateToken, saveOrder, removeCartItems, async (req, res) => {
+  let date = new Date();
+  date.setDate(date.getDate() + 35);
+
+  let newDate = formatDate(date);
+
+  console.log(newDate);
+  res.json({
+    transactionID: req.transactionID,
+    error: false,
+    message: "Order Placed Successfully!",
+    deliveryDate: newDate,
   });
 });
 
