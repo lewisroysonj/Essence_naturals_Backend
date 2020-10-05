@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  buynow: {
+    type: Object,
+    default: {},
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

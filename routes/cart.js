@@ -7,6 +7,7 @@ const Order = require("../models/order");
 const Product = require("../models/product");
 const User = require("../models/user");
 const { formatDate } = require("../helpers/date");
+const auth = require("../middleware/auth");
 const router = express.Router();
 
 function calculatePrice(products) {
@@ -122,6 +123,22 @@ router.post("/", authenticateToken, async (req, res) => {
   }
 });
 
+router.post("/buynow", authenticateToken, async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.body.id });
+    console.log(req.body);
+
+    await User.updateOne({ _id: req.user.accessUser }, { buynow: product });
+
+    res.json({
+      error: false,
+      product: product,
+    });
+  } catch (err) {
+    console.error("Buy now Error :", err);
+  }
+});
+
 router.get("/checkout", authenticateToken, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.user.accessUser });
@@ -186,7 +203,7 @@ async function completePayment(req, res, next) {
         },
         unit_amount: price,
       },
-      quantity: req.body.items[i].qty,
+      quantity: req.body.items[i].qty ? req.body.items[i].qty : 1,
     };
 
     line_items.push(product);
@@ -225,9 +242,17 @@ async function completePayment(req, res, next) {
 
 async function removeCartItems(req, res, next) {
   try {
-    await User.updateOne({ _id: req.user.accessUser }, { cartItems: [] });
-    console.log("Emptied cart successfully!");
-    next();
+    const user = await User.findOne({ _id: req.user.accessUser });
+
+    if (user.buynow.name) {
+      await User.updateOne({ _id: req.user.accessUser }, { buynow: {} });
+      console.log("Removed Buynow successfully!");
+      next();
+    } else {
+      await User.updateOne({ _id: req.user.accessUser }, { cartItems: [] });
+      console.log("Emptied cart successfully!");
+      next();
+    }
   } catch (err) {
     console.error("Remove cart items Error: ", err);
     res.status(500).json({
@@ -278,13 +303,12 @@ async function saveOrder(req, res, next) {
 router.post("/checkout/create-session", authenticateToken, saveAddress, completePayment, async (req, res) => {
   res.json({
     id: req.user.sessionID,
-    transactionID: req.transactionID,
   });
 });
 
 router.post("/checkout/placeorder", authenticateToken, saveOrder, removeCartItems, async (req, res) => {
   let date = new Date();
-  date.setDate(date.getDate() + 35);
+  date.setDate(date.getDate() + 18);
 
   let newDate = formatDate(date);
 
@@ -294,6 +318,13 @@ router.post("/checkout/placeorder", authenticateToken, saveOrder, removeCartItem
     error: false,
     message: "Order Placed Successfully!",
     deliveryDate: newDate,
+  });
+});
+
+router.get("/checkout/removebuynow", authenticateToken, removeCartItems, async (req, res) => {
+  res.json({
+    error: false,
+    message: "removed items successfully",
   });
 });
 
