@@ -26,8 +26,6 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-const CLIENT_DOMAIN = "http://localhost:3000/checkout";
-
 dotenv.config({ path: "./config/config.env" });
 
 //database

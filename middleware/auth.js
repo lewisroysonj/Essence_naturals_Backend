@@ -1,7 +1,7 @@
 /** @format */
 const jwt = require("jsonwebtoken");
 module.exports = {
-  authenticateToken: function authenticateToken(req, res, next) {
+  authenticateToken: function authenticateToken(req, next) {
     try {
       if (req.headers.authorization == "false") {
         req.user = null;
@@ -13,7 +13,6 @@ module.exports = {
             req.user = null;
           } else {
             req.user = user;
-            console.log("yyyy", req.user);
             next();
           }
         });

@@ -7,7 +7,6 @@ function createOptions(array, selector, element) {
     option.innerHTML = category.name;
     categorySelector.appendChild(option);
   });
-  console.log("this is it ", options);
 }
 
 module.exports = {

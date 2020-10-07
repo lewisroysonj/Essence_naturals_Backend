@@ -85,19 +85,23 @@ const productSchema = new mongoose.Schema({
 });
 
 productSchema.pre("validate", function (next) {
-  if (this.name) {
-    this.slug = slugify(this.name, { lower: true, strict: true });
+  try {
+    if (this.name) {
+      this.slug = slugify(this.name, { lower: true, strict: true });
+    }
+
+    let name = this.slug;
+    const nameArray = name.split("-");
+    const nameLetters = nameArray.map((names) => {
+      return names.charAt(0);
+    });
+
+    this.EPIN = nameLetters.join("").toUpperCase() + Date.now();
+
+    next();
+  } catch (error) {
+    console.error("Product Slug Error: ", error);
   }
-
-  let name = this.slug;
-  const nameArray = name.split("-");
-  const nameLetters = nameArray.map((names) => {
-    return names.charAt(0);
-  });
-
-  this.EPIN = nameLetters.join("").toUpperCase() + Date.now();
-
-  next();
 });
 
 module.exports = mongoose.model("Product", productSchema);

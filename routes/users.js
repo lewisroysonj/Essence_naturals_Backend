@@ -44,8 +44,6 @@ router.get("/user", authenticateToken, async (req, res) => {
   if (req.user) {
     const user = await User.findOne({ _id: req.user.accessUser });
 
-    console.log(user);
-
     try {
       if (user) {
         res.send({

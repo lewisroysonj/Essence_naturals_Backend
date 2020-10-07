@@ -15,7 +15,7 @@ router.get("/:data", searchArticles, (req, res, next) => {
     });
   } catch (err) {
     res.json(err);
-    console.log("Search Err: ", err);
+    console.error("Search Err: ", err);
   }
 });
 

@@ -46,18 +46,20 @@ const categorySchema = new mongoose.Schema({
 });
 
 categorySchema.pre("validate", function (next) {
-  if (this.name) {
-    this.slug = slugify(this.name, { lower: true, strict: true });
+  try {
+    if (this.name) {
+      this.slug = slugify(this.name, { lower: true, strict: true });
+    }
+    let name = this.slug;
+    const nameArray = name.split("-");
+    const nameLetters = nameArray.map((names) => {
+      return names.charAt(0);
+    });
+    this.categoryID = nameLetters.join("").toUpperCase() + Date.now();
+    next();
+  } catch (err) {
+    console.error("Category Slug Error :", err);
   }
-
-  let name = this.slug;
-  const nameArray = name.split("-");
-  const nameLetters = nameArray.map((names) => {
-    return names.charAt(0);
-  });
-  this.categoryID = nameLetters.join("").toUpperCase() + Date.now();
-
-  next();
 });
 
 module.exports = mongoose.model("Category", categorySchema);

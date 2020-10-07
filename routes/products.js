@@ -78,8 +78,6 @@ router.post("/rate/:id", async (req, res) => {
 
     //check if customer has rated previously or not
     for (let i = 0; i < ratedCustomers.length; i++) {
-      console.log("rated", ratedCustomers[i].id);
-      console.log("new", req.body.ratedCustomerID);
       if (ratedCustomers[i].id === req.body.ratedCustomerID) {
         reRatedCustomer = ratedCustomers[i].id;
       }
@@ -212,8 +210,6 @@ router.get("/:category", async (req, res) => {
     const category = await Category.findOne({
       slug: req.params.category,
     });
-
-    console.log(category);
 
     if (category === null) {
       res.status(404).json({ message: "Couldn't Find the Page you are looking for" });

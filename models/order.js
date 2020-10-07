@@ -36,15 +36,18 @@ const orderSchema = new mongoose.Schema({
 });
 
 orderSchema.pre("validate", function (next) {
-  let orderDate = this.createdAt;
-  const buyerName = this.buyerName;
-  const nameArray = buyerName.split(" ");
-  const nameLetters = nameArray.map((name) => {
-    return name.charAt(0);
-  });
-  this.transactionID = "EN" + nameLetters.join("").toUpperCase() + Date.now();
+  try {
+    const buyerName = this.buyerName;
+    const nameArray = buyerName.split(" ");
+    const nameLetters = nameArray.map((name) => {
+      return name.charAt(0);
+    });
+    this.transactionID = "EN" + nameLetters.join("").toUpperCase() + Date.now();
 
-  next();
+    next();
+  } catch (err) {
+    console.error("Order Slug Error: ", err);
+  }
 });
 
 module.exports = mongoose.model("Order", orderSchema);
