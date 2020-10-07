@@ -65,9 +65,9 @@ const multerMid = multer({
 });
 app.use(multerMid.single("myFile"));
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static("public"));
 
-app.set("views", path.join(__dirname, "public", "views"));
+// app.set("views", path.join(__dirname, "public", "views"));
 app.set("view engine", "ejs");
 
 //routes
@@ -80,4 +80,4 @@ app.use("/contact", contactRouter);
 app.use("/search", searchRouter);
 app.use("/cart", cartRouter);
 
-app.listen(PORT, console.log(`Server is running in http://localhost:${PORT}`));
+app.listen(PORT, console.log(`Server is running in port ${PORT}`));

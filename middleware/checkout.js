@@ -59,9 +59,7 @@ module.exports = {
           customer_email: req.user.email,
           metadata: req.body.shippingInfo,
         });
-        console.log(session);
         req.user.sessionID = session.id;
-        console.log("session", req.user.sessionID);
         next();
       } else {
         res.status(500).json({

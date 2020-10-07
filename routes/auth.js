@@ -10,7 +10,7 @@ const { emailToLowerCase } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.post("/register", emailToLowerCase, (req, res, next) => {
+router.post("/register", emailToLowerCase, (req, res) => {
   try {
     User.findOne({ email: req.body.email }, async (err, doc) => {
       if (err) throw err;

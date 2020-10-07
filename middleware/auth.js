@@ -1,7 +1,7 @@
 /** @format */
 const jwt = require("jsonwebtoken");
 module.exports = {
-  authenticateToken: function authenticateToken(req, next) {
+  authenticateToken: function authenticateToken(req, res, next) {
     try {
       if (req.headers.authorization == "false") {
         req.user = null;
